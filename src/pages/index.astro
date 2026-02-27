@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro'
+import Hero from '../components/Hero.astro'
+import Cardpoema from '../components/Cardpoema.astro';
+
+const allPoems = await getCollection('poemas');
+const poemas = allPoems.sort(
+	(a: any, b: any) => b.data.date.getTime() - a.data.date.getTime()
+);
+
+function formatDate(date: Date){
+	return date.toLocaleDateString('pt-BR'),({
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric'
+	});
+}
+
+---
+
+<html lang="pt-BR">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Placeholder</title>
+	</head>
+	<Base title="algo">
+	<a href="#main-content" class="skip-link">Ir para o conteúdo</a>
+	 <Hero title="Placeholder" subtitle="Placeholder 2." />
+	 
+	 <section aria-label="Lista de poemas">
+    <ul class="poem-list" role="list">
+      {poemas.map((poem: any, i: any) => (
+        <Cardpoema poem={poem} index={i} />
+      ))}
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .poem-list {
+    list-style: none;
+    display: grid;
+    gap: 1.25rem;
+  }
+</style>
+	
+</html>

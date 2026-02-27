@@ -1,0 +1,90 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Sobre — Placeholder" description="Sobre o autor.">
+  <a href="#main-content" class="skip-link">Ir para o conteúdo</a>
+
+  <nav class="breadcrumb" aria-label="Navegação de volta">
+    <a href="/" class="back-link">← todos os poemas</a>
+  </nav>
+
+  <article class="about-article" aria-labelledby="about-title">
+    <header class="about-header">
+      <p class="about-eyebrow" aria-hidden="true">∞ &nbsp; sobre</p>
+      <h1 id="about-title" class="about-title">O autor</h1>
+    </header>
+
+    <div class="about-body">
+      <!-- ✏️ Edite este conteúdo com suas informações -->
+      <p>
+        Escreva aqui sobre você — quem é, de onde vem, o que te move a escrever poesia.
+      </p>
+      <p>
+        Este espaço é seu. Pode ser curto ou longo, poético ou direto.
+        O cosmos aguarda suas palavras.
+      </p>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .breadcrumb {
+    margin-bottom: 2.5rem;
+  }
+
+  .back-link {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover {
+    color: var(--accent);
+  }
+
+  .about-article {
+    max-width: var(--max-prose);
+  }
+
+  .about-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .about-eyebrow {
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    font-weight: 400;
+  }
+
+  .about-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 6vw, 3rem);
+    font-weight: 300;
+    line-height: 1.1;
+    background: linear-gradient(135deg, var(--text-primary) 50%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .about-body {
+    font-size: 1.05rem;
+    line-height: 2;
+    color: var(--text-secondary);
+  }
+
+  .about-body p {
+    margin-bottom: 1.5rem;
+    max-width: var(--max-prose);
+  }
+
+  .about-body p:last-child {
+    margin-bottom: 0;
+  }
+</style>

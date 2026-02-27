@@ -1,0 +1,50 @@
+---
+interface Props {
+  title: string;
+  subtitle: string;
+}
+
+const { title, subtitle } = Astro.props;
+---
+
+<section class="hero" aria-labelledby="hero-heading">
+  <p class="hero-eyebrow" aria-hidden="true">Coletânea de poemas</p>
+  <h1 id="hero-heading" class="hero-title">{title}</h1>
+  <p class="hero-subtitle">{subtitle}</p>
+</section>
+
+<style>
+  .hero {
+    padding: 3rem 0 4rem;
+    text-align: left;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    font-weight: 400;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 6vw, 3.8rem);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--text-primary) 40%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    max-width: 40ch;
+    line-height: 1.7;
+  }
+</style>

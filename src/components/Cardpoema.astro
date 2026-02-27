@@ -1,0 +1,170 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  poem: CollectionEntry<'poemas'>;
+  index: number;
+}
+
+const { poem, index } = Astro.props;
+
+const formattedDate = poem.data.date.toLocaleDateString('pt-BR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<li class="poem-card" style={`--delay: ${index * 80}ms`}>
+  <a href={`/poemas/${poem.slug}`} class="poem-card-link" aria-label={`Ler o poema: ${poem.data.title}`}>
+    <div class="poem-card-inner">
+      <div class="poem-card-glow" aria-hidden="true"></div>
+
+      <header class="poem-card-header">
+        <span class="poem-number" aria-hidden="true">
+          {String(index + 1).padStart(2, '0')}
+        </span>
+        <time class="poem-date" datetime={poem.data.date.toISOString()}>
+          {formattedDate}
+        </time>
+      </header>
+
+      <h2 class="poem-title">{poem.data.title}</h2>
+
+      {poem.data.excerpt && (
+        <p class="poem-excerpt">{poem.data.excerpt}</p>
+      )}
+
+      {poem.data.tags.length > 0 && (
+        <ul class="poem-tags" role="list" aria-label="Tags">
+          {poem.data.tags.map((tag: any) => (
+            <li class="poem-tag">{tag}</li>
+          ))}
+        </ul>
+      )}
+
+      <span class="poem-cta" aria-hidden="true">ler poema →</span>
+    </div>
+  </a>
+</li>
+
+<style>
+  .poem-card {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 0.5s ease forwards;
+    animation-delay: var(--delay, 0ms);
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .poem-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    transition: border-color 0.25s, background 0.25s, transform 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .poem-card-link:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-card-hover);
+    transform: translateY(-2px);
+  }
+
+  .poem-card-link:hover .poem-card-glow {
+    opacity: 1;
+  }
+
+  .poem-card-link:hover .poem-cta {
+    color: var(--accent);
+    letter-spacing: 0.06em;
+  }
+
+  .poem-card-inner {
+    padding: clamp(1.25rem, 4vw, 1.75rem);
+    position: relative;
+    z-index: 1;
+  }
+
+  .poem-card-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at top left, var(--accent-glow), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .poem-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+
+  .poem-number {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+  }
+
+  .poem-date {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .poem-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    font-weight: 300;
+    color: var(--text-primary);
+    margin-bottom: 0.6rem;
+    line-height: 1.3;
+    letter-spacing: 0.01em;
+  }
+
+  .poem-excerpt {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    margin-bottom: 1rem;
+    max-width: var(--max-prose);
+  }
+
+  .poem-tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .poem-tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .poem-cta {
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    display: block;
+    transition: color 0.2s, letter-spacing 0.2s;
+  }
+</style>

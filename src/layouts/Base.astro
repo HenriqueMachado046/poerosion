@@ -1,0 +1,279 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Um espaço para poesia.' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&family=Lexend+Mega:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Blobs -->
+    <div class="blobs" aria-hidden="true"></div>
+
+    <!-- Grain overlay -->
+    <div class="grain" aria-hidden="true"></div>
+
+    <div class="layout">
+      <header class="site-header">
+        <a href="/" class="site-logo" aria-label="Página inicial">
+          <span class="logo-text">Placeholder</span>
+        </a>
+        <nav aria-label="Navegação principal">
+          <a href="/">Poemas</a>
+          <a href="/sobre">Sobre</a>
+        </nav>
+      </header>
+
+      <main id="main-content">
+        <slot />
+      </main>
+
+      <footer class="site-footer">
+        <p>feito com delírio e poesia</p>
+      </footer>
+    </div>
+  </body>
+</html>
+
+<style is:global>
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  :root {
+    --bg:           #0a0810;
+    --bg-card:      #0f0c17;
+    --bg-card-hover:#150f1f;
+    --border:       rgba(150, 110, 200, 0.12);
+    --border-hover: rgba(150, 110, 200, 0.28);
+
+    --text-primary:   #ede8f5;
+    --text-secondary: #9a8ab0;
+    --text-muted:     #4a3f60;
+
+    --accent:         #a87fd4;
+    --accent-glow:    rgba(168, 127, 212, 0.16);
+    --accent-2:       #6e4fa0;
+
+    --blob-1: rgba(90, 50, 150, 0.09);
+    --blob-2: rgba(60, 30, 110, 0.07);
+    --blob-3: rgba(120, 60, 160, 0.06);
+
+    /* Acessibilidade */
+    --line-height:    1.85;
+    --letter-spacing: 0.01em;
+    --max-prose:      68ch;
+    --font-body:      'Lexend', sans-serif;
+    --font-display:   'Lexend Mega', sans-serif;
+
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: var(--line-height);
+    letter-spacing: var(--letter-spacing);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Blobs ── */
+  .blobs {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .blobs::before,
+  .blobs::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(110px);
+  }
+
+  .blobs::before {
+    width: 55vw;
+    height: 55vw;
+    background: radial-gradient(ellipse, var(--blob-1) 0%, transparent 70%);
+    top: -15%;
+    left: -10%;
+    animation: drift 30s ease-in-out infinite alternate;
+  }
+
+  .blobs::after {
+    width: 45vw;
+    height: 45vw;
+    background: radial-gradient(ellipse, var(--blob-2) 0%, transparent 70%);
+    bottom: -15%;
+    right: -5%;
+    animation: drift 38s ease-in-out infinite alternate-reverse;
+  }
+
+  @keyframes drift {
+    0%   { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(3vw, 4vh) scale(1.08); }
+  }
+
+  /* ── Grain (static) ── */
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.028;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+  }
+
+  /* ── Layout ── */
+  .layout {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 clamp(1.25rem, 5vw, 3rem);
+  }
+
+  /* ── Header ── */
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem 0 1.5rem;
+    border-bottom: 1px solid var(--border);
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .site-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: color 0.2s;
+  }
+
+  .site-logo:hover {
+    color: var(--accent);
+  }
+
+  .logo-text {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    color: var(--text-primary);
+  }
+
+  nav {
+    display: flex;
+    gap: 2rem;
+  }
+
+  nav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+    position: relative;
+    padding-bottom: 2px;
+  }
+
+  nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--accent);
+    transition: width 0.25s ease;
+  }
+
+  nav a:hover {
+    color: var(--accent);
+  }
+
+  nav a:hover::after {
+    width: 100%;
+  }
+
+  /* ── Main ── */
+  main {
+    flex: 1;
+    padding: 3rem 0;
+  }
+
+  /* ── Footer ── */
+  .site-footer {
+    padding: 1.5rem 0 2rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-align: center;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── Focus visible (accessibility) ── */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  /* ── Links ── */
+  a {
+    color: var(--accent);
+  }
+
+  /* ── Skip to content ── */
+  .skip-link {
+    position: absolute;
+    top: -999px;
+    left: 1rem;
+    background: var(--accent);
+    color: var(--bg);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 500;
+    z-index: 100;
+    text-decoration: none;
+  }
+
+  .skip-link:focus {
+    top: 1rem;
+  }
+</style>
